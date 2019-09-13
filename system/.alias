@@ -3,6 +3,7 @@
 alias reload="source ~/.bash_profile"
 alias _="sudo"
 alias g="git"
+alias grep="ggrep"
 alias rr="rm -rf"
 alias cls="clear; printf '\033[3J'"
 

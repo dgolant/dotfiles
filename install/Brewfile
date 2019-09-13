@@ -1,10 +1,13 @@
 tap "homebrew/bundle"
 tap "homebrew/core"
 
+brew "bats"
 brew "coreutils"
 brew "diff-so-fancy"
 brew "dockutil"
 brew "hub"
+brew "gnu-sed"
+brew "grep"
 brew "httpie"
 brew "jq"
 brew "peco"
