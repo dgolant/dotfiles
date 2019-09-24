@@ -79,3 +79,6 @@ gems: ruby
 
 test:
 	bats test/*.bats
+
+tmux-plugin-mgr:
+	git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
