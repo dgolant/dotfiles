@@ -47,6 +47,12 @@ if [ -d "$DOTFILES_EXTRA_DIR" ]; then
   done
 fi
 
+if [ -f ~/.git-completion.bash ]; then
+  . ~/.git-completion.bash
+fi
+
+eval "$(pyenv init -)"
+
 # Clean up
 
 unset READLINK CURRENT_SCRIPT SCRIPT_PATH DOTFILE EXTRAFILE

@@ -6,6 +6,7 @@ alias g="git"
 alias grep="ggrep"
 alias rr="rm -rf"
 alias cls="clear; printf '\033[3J'"
+alias rebasemaster="git checkout master && git pull origin master && git checkout - && git rebase master"
 
 # Default options
 
