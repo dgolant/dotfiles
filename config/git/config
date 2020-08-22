@@ -6,7 +6,7 @@
 	user = dangolant
 
 [core]
-	excludesfile = ~/.config/git/ignore
+	excludesfile = /Users/dgolant/.gitignore
 	editor = vim
 	filemode = false
 	trustctime = false
