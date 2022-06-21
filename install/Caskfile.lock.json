@@ -1,0 +1,86 @@
+{
+  "entries": {
+    "tap": {
+      "homebrew/cask": {
+        "revision": "3fdd50bf50f52d1deca1524e0feaa37dd78f06cb"
+      },
+      "homebrew/cask-drivers": {
+        "revision": "011d94410c149f8a6d63756f29b9a5ecea4d3f77"
+      },
+      "homebrew/cask-fonts": {
+        "revision": "d5f379dd8f1797392d91b9d2f77441fabb1ef82d"
+      },
+      "homebrew/cask-versions": {
+        "revision": "095e77642493d17ed025421b75d39bcbcb188281"
+      }
+    },
+    "cask": {
+      "1password": {
+        "version": "7.3.2",
+        "options": {
+          "full_name": "1password"
+        }
+      },
+      "font-fira-code": {
+        "version": "5.2",
+        "options": {
+          "full_name": "font-fira-code"
+        }
+      },
+      "font-hack": {
+        "version": "3.003",
+        "options": {
+          "full_name": "font-hack"
+        }
+      },
+      "google-chrome-canary": {
+        "version": "latest",
+        "options": {
+          "full_name": "google-chrome-canary"
+        }
+      },
+      "itsycal": {
+        "version": "0.11.17",
+        "options": {
+          "full_name": "itsycal"
+        }
+      },
+      "postman": {
+        "version": "7.6.0",
+        "options": {
+          "full_name": "postman"
+        }
+      },
+      "spectacle": {
+        "version": "1.2",
+        "options": {
+          "full_name": "spectacle"
+        }
+      },
+      "tunnelblick": {
+        "version": "3.8.1,5400",
+        "options": {
+          "full_name": "tunnelblick"
+        }
+      },
+      "webpquicklook": {
+        "version": "latest",
+        "options": {
+          "full_name": "webpquicklook"
+        }
+      }
+    }
+  },
+  "system": {
+    "macos": {
+      "catalina": {
+        "HOMEBREW_VERSION": "2.6.1",
+        "HOMEBREW_PREFIX": "/usr/local",
+        "Homebrew/homebrew-core": "93697825da4944984a7b496f565fc01f4d0c63ad",
+        "CLT": "12.3.0.0.1.1607026830",
+        "Xcode": "12.0.1",
+        "macOS": "10.15.7"
+      }
+    }
+  }
+}

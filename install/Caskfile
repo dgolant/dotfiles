@@ -13,11 +13,5 @@ cask "spectacle"
 cask "tunnelblick"
 
 # Quick Look Plugins (https://github.com/sindresorhus/quick-look-plugins)
-cask "qlcolorcode"
-cask "qlimagesize"
-cask "qlmarkdown"
-cask "qlstephen"
-cask "qlvideo"
-cask "quicklook-json"
-cask "suspicious-package"
+
 cask "webpquicklook"

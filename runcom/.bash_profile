@@ -65,7 +65,10 @@ ARTIFACTORY_PASSWORD=AKCp5dLMta1SrXiwvrtzmD1px5Uix3rVcM8SSjx4eboiFpZHRrvU754pNs4
 
 # Don't use a password on make db-start
 SAML2AWS_ROLE=arn:aws:iam::299544290090:role/Super-Developers
+SAML2AWS_PROFILE=default
 SAML2AWS_ALLOW_KEYCHAIN=TRUE
+
+
 
 ## END BETTER SPECIFIC
 # Export
@@ -73,3 +76,5 @@ SAML2AWS_ALLOW_KEYCHAIN=TRUE
 export DOTFILES_DIR DOTFILES_EXTRA_DIR
 # At some point I should modify where DOTFILES_EXTRA_DIR
 # points to and make a company-specific extras folder
+
+source $HOME/.plutus/*
