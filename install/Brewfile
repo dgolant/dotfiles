@@ -8,7 +8,7 @@ brew "coreutils"
 brew "croc"
 brew "diff-so-fancy"
 brew "difftastic"
-brew "dockutil"
+# brew "dockutil" // done by a cask temporarily while dockutil homebrew issue is resolved
 brew "fasd"
 brew "fd"
 brew "ffmpeg"
