@@ -8,7 +8,11 @@ brew "coreutils"
 brew "croc"
 brew "diff-so-fancy"
 brew "difftastic"
-# brew "dockutil" // done by a cask temporarily while dockutil homebrew issue is resolved
+
+# brew "dockutil" // done by a custom install temporarily while dockutil homebrew issue is resolved
+brew tap lotyp/homebrew-formulae
+brew install lotyp/formulae/dockutil
+
 brew "fasd"
 brew "fd"
 brew "ffmpeg"
