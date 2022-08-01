@@ -1,4 +1,4 @@
-COMPUTER_NAME="Neo"
+COMPUTER_NAME="dmba"
 
 osascript -e 'tell application "System Preferences" to quit'
 
