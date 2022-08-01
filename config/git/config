@@ -60,6 +60,7 @@
 	stl = ls-files -m -o --exclude-standard
 	sts = status -sb
 	unstage = reset --hard HEAD
+	adog = log  --all --decorate --oneline --graph
 
 [diff]
 	renames = copies
