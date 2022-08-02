@@ -229,10 +229,10 @@ defaults write com.apple.dock showhidden -bool true
 defaults write com.apple.dock no-bouncing -bool true
 
 # Disable hot corners
-# defaults write com.apple.dock wvous-tl-corner -int 0
-# defaults write com.apple.dock wvous-tr-corner -int 0
-# defaults write com.apple.dock wvous-bl-corner -int 0
-# defaults write com.apple.dock wvous-br-corner -int 0
+defaults write com.apple.dock wvous-tl-corner -int 0
+defaults write com.apple.dock wvous-tr-corner -int 0
+defaults write com.apple.dock wvous-bl-corner -int 0
+defaults write com.apple.dock wvous-br-corner -int 0
 
 # Don't show recently used applications in the Dock
 defaults write com.Apple.Dock show-recents -bool false
