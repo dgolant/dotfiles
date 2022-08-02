@@ -35,6 +35,14 @@ fi
 
 eval "$(dircolors -b "$DOTFILES_DIR"/system/.dir_colors)"
 
+# Add git-completion
+
+if [ -f ~/.git-completion.bash ]; then
+  . "$DOTFILES_DIR/config/git/.git-completion.bash"
+fi
+
+eval "$(pyenv init -)"
+
 # Clean up
 
 unset CURRENT_SCRIPT SCRIPT_PATH DOTFILE
