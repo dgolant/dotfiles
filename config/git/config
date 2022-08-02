@@ -3,25 +3,26 @@
 	email = dgolant@gmail.com
 
 [github]
-	user = dangolant
+	user = dgolant
 
 [core]
 	excludesfile = ~/.config/git/ignore
-	editor = vim
+	editor = code --wait
 	filemode = false
 	trustctime = false
 	autocrlf = input
 	untrackedCache = true
 	pager = diff-so-fancy | less --tabs=4 -RFX
+	ignorecase = false
 
 [credential]
 	helper = osxkeychain
 
-[grep]
-	lineNumber = true
+[pull]
+	rebase = true
 
-[help]
-	autocorrect = 1
+[init]
+	defaultBranch = main
 
 [push]
 	default = simple
@@ -29,6 +30,12 @@
 
 [fetch]
 	prune = true
+
+[grep]
+	lineNumber = true
+
+[help]
+	autocorrect = 1
 
 [alias]
 	amend = commit --amend --reuse-message=HEAD
