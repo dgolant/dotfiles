@@ -3,7 +3,7 @@
 	email = dgolant@gmail.com
 
 [github]
-	user = dangolant
+	user = dgolant
 
 [core]
 	excludesfile = ~/.config/git/ignore
@@ -13,22 +13,29 @@
 	autocrlf = input
 	untrackedCache = true
 	pager = diff-so-fancy | less --tabs=4 -RFX
+	ignorecase = false
 
 [credential]
 	helper = osxkeychain
+
+[pull]
+	rebase = true
+
+[init]
+	defaultBranch = main
+
+[push]
+	default = current
+	followTags = true
+
+[fetch]
+	prune = true
 
 [grep]
 	lineNumber = true
 
 [help]
 	autocorrect = 1
-
-[push]
-	default = simple
-	followTags = true
-
-[fetch]
-	prune = true
 
 [alias]
 	amend = commit --amend --reuse-message=HEAD
@@ -54,6 +61,8 @@
 	sts = status -sb
 	unstage = reset --hard HEAD
 	adog = log  --all --decorate --oneline --graph
+	amend-to = "!f() { SHA=`git rev-parse \"$1\"`; git commit --fixup \"$SHA\" && GIT_SEQUENCE_EDITOR=true git rebase --interactive --autosquash \"$SHA^\"; }; f"
+	undo = "checkout master -- "
 
 [diff]
 	renames = copies

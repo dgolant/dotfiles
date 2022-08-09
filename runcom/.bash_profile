@@ -3,13 +3,11 @@
 [ -z "$PS1" ] && return
 
 # Resolve DOTFILES_DIR (assuming ~/.dotfiles on distros without readlink and/or $BASH_SOURCE/$0)
-
-READLINK=$(which greadlink 2>/dev/null || which readlink)
 CURRENT_SCRIPT=$BASH_SOURCE
 
-if [[ -n $CURRENT_SCRIPT && -x "$READLINK" ]]; then
-  SCRIPT_PATH=$($READLINK -f "$CURRENT_SCRIPT")
-  DOTFILES_DIR=$(dirname "$(dirname "$SCRIPT_PATH")")
+if [[ -n $CURRENT_SCRIPT && -x readlink ]]; then
+  SCRIPT_PATH=$(readlink -n $CURRENT_SCRIPT)
+  DOTFILES_DIR="${PWD}/$(dirname $(dirname $SCRIPT_PATH))"
 elif [ -d "$HOME/.dotfiles" ]; then
   DOTFILES_DIR="$HOME/.dotfiles"
 else
@@ -23,12 +21,12 @@ PATH="$DOTFILES_DIR/bin:$PATH"
 
 # Source the dotfiles (order matters)
 
-for DOTFILE in "$DOTFILES_DIR"/system/.{function,function_*,path,env,alias,grep,prompt,nvm,completion,custom}; do
+for DOTFILE in "$DOTFILES_DIR"/system/.{function,function_*,path,env,exports,alias,fnm,grep,prompt,completion,fix}; do
   [ -f "$DOTFILE" ] && . "$DOTFILE"
 done
 
 if is-macos; then
-  for DOTFILE in "$DOTFILES_DIR"/system/.{env,alias,function}.macos; do
+  for DOTFILE in "$DOTFILES_DIR"/system/.{env,alias,function,path}.macos; do
     [ -f "$DOTFILE" ] && . "$DOTFILE"
   done
 fi
@@ -37,26 +35,18 @@ fi
 
 eval "$(dircolors -b "$DOTFILES_DIR"/system/.dir_colors)"
 
-# Hook for extra/custom stuff
+# Add git-completion
 
-DOTFILES_EXTRA_DIR="$HOME/.extra"
-
-if [ -d "$DOTFILES_EXTRA_DIR" ]; then
-  for EXTRAFILE in "$DOTFILES_EXTRA_DIR"/runcom/*.sh; do
-    [ -f "$EXTRAFILE" ] && . "$EXTRAFILE"
-  done
+if [ -f ~/.git-completion.bash ]; then
+  . "$DOTFILES_DIR/config/git/.git-completion.bash"
 fi
+
+eval "$(pyenv init -)"
 
 # Clean up
 
-unset READLINK CURRENT_SCRIPT SCRIPT_PATH DOTFILE EXTRAFILE
+unset CURRENT_SCRIPT SCRIPT_PATH DOTFILE
 
 # Export
 
-export DOTFILES_DIR DOTFILES_EXTRA_DIR
-# At some point I should modify where DOTFILES_EXTRA_DIR
-# points to and make a company-specific extras folder
-
-# SKIMM stuff
-export SKIMM=/Users/dan/theSkimm
-eval $(dinghy env)
+export DOTFILES_DIR
