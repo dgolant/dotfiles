@@ -23,6 +23,10 @@ cask "tunnelblick"
 cask "visual-studio-code"
 cask "vlc"
 
+# allows control of natural scroll on mouse and trackpad separately
+cask "unnaturalscrollwheels"
+
+
 # Quick Look Plugins (https://github.com/sindresorhus/quick-look-plugins)
 cask "qlcolorcode"
 cask "qlstephen"
