@@ -41,7 +41,7 @@ if [ -f ~/.git-completion.bash ]; then
   . "$DOTFILES_DIR/config/git/.git-completion.bash"
 fi
 
-eval "$(pyenv init -)"
+# eval "$(pyenv init -)"
 
 # Clean up
 

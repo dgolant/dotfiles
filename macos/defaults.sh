@@ -1,4 +1,4 @@
-COMPUTER_NAME="dmba"
+COMPUTER_NAME="daniel.golant"
 
 osascript -e 'tell application "System Preferences" to quit'
 
