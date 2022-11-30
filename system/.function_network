@@ -32,3 +32,9 @@ transfer() {
 unshorten() {
   curl -sIL $1 | sed -n 's/Location: *//p'
 }
+
+# SSH into kube cluster
+
+kube_ssh() {
+  kubectl exec --stdin -it $1 -- /bin/bash
+}
