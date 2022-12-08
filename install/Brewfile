@@ -5,15 +5,13 @@ tap "homebrew/core"
 brew "awscli"
 brew "bat"
 brew "bats-core"
-brew "caffeine"
 brew "coreutils"
 brew "croc"
 brew "diff-so-fancy"
 brew "difftastic"
 
 # brew "dockutil" // done by a custom install temporarily while dockutil homebrew issue is resolved
-brew tap lotyp/homebrew-formulae
-brew install lotyp/formulae/dockutil
+# brew install 'hpedrorodrigues/tools/dockutil'
 
 brew "fasd"
 brew "fd"
@@ -26,6 +24,7 @@ brew "grip"
 brew "httpie"
 brew "imagemagick"
 brew "jq"
+brew "nvm"
 brew "pandoc"
 brew "peco"
 brew "psgrep"
