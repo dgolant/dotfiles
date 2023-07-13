@@ -1,7 +1,7 @@
-COMPUTER_NAME="Neo"
-LANGUAGES=(en nl)
-LOCALE="en_US@currency=EUR"
-MEASUREMENT_UNITS="Centimeters"
+asCOMPUTER_NAME="daniel.golant"
+LANGUAGES=(en)
+LOCALE="en_US@currency=USD"
+MEASUREMENT_UNITS="Inches"
 SCREENSHOTS_FOLDER="${HOME}/Screenshots"
 
 # Topics
@@ -69,7 +69,7 @@ sudo pmset -a standbydelay 86400
 sudo pmset -a sms 0
 
 # Disable audio feedback when volume is changed
-defaults write com.apple.sound.beep.feedback -bool false
+defaults write com.apple.sound.beep.feedback -bool true
 
 # Disable the sound effects on boot
 sudo nvram SystemAudioVolume=" "
