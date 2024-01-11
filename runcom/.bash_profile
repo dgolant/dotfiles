@@ -39,3 +39,9 @@ eval "$(dircolors -b "$DOTFILES_DIR"/system/.dir_colors)"
 
 unset CURRENT_SCRIPT SCRIPT_PATH DOTFILE
 export DOTFILES_DIR
+. "$HOME/.cargo/env"
+
+
+eval "$(direnv hook bash)"
+
+export GITLAB_TOKEN=$(security find-generic-password -a ${USER} -s gitlab_token -w)

@@ -5,6 +5,8 @@ is-executable getconf && PATH=$($(command -v getconf) PATH)
 
 export HOMEBREW_PREFIX=$($DOTFILES_DIR/bin/is-supported $DOTFILES_DIR/bin/is-arm64 /opt/homebrew /usr/local)
 
+# GoLang
+export GOPATH="$HOME/go"
 # Prepend new items to path (if directory exists)
 
 prepend-path "/bin"
@@ -21,6 +23,7 @@ prepend-path "$HOME/.cargo/bin"
 prepend-path "/sbin"
 prepend-path "/usr/sbin"
 prepend-path "$HOME/.local/share/fnm"
+prepend-path "$GOPATH/bin"
 
 # Remove duplicates (preserving prepended items)
 # Source: http://unix.stackexchange.com/a/40755
