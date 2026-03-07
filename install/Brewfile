@@ -11,8 +11,7 @@ brew "coreutils"
 brew "croc"
 brew "diff-so-fancy"
 
-# brew "dockutil" // done by a custom install temporarily while dockutil homebrew issue is resolved
-# brew install 'hpedrorodrigues/tools/dockutil'
+brew "dockutil"
 
 brew "fasd"
 brew "fd"
