@@ -3,6 +3,7 @@ tap "homebrew/bundle"
 tap "homebrew/core"
 
 brew "awscli"
+brew "bash"
 brew "bat"
 brew "bats-core"
 brew "coreutils"
