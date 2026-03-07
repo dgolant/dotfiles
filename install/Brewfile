@@ -2,6 +2,7 @@ tap "goles/battery"
 tap "homebrew/bundle"
 tap "homebrew/core"
 
+# necessary for internal file function
 brew "awscli"
 brew "bash"
 brew "bat"
@@ -9,35 +10,39 @@ brew "bats-core"
 brew "coreutils"
 brew "croc"
 brew "diff-so-fancy"
-brew "difftastic"
 
 # brew "dockutil" // done by a custom install temporarily while dockutil homebrew issue is resolved
 # brew install 'hpedrorodrigues/tools/dockutil'
 
 brew "fasd"
 brew "fd"
-brew "ffmpeg"
 brew "fnm"
 brew "gnu-sed"
+# see battery in terminal
 brew "goles/battery/battery"
 brew "grep"
+# view gh markdown in browser
 brew "grip"
-brew "httpie"
-brew "imagemagick"
 brew "jq"
 brew "nvm"
+# markdown to html/word/etc converter
 brew "pandoc"
+# fuzzy finder
 brew "peco"
+# alias for pas aux --grep
 brew "psgrep"
 brew "python"
 brew "rust"
+# linter for shell scripts
 brew "shellcheck"
 brew "ssh-copy-id"
 brew "stow"
+# correct commands
 brew "thefuck"
 brew "ripgrep"
+# upgrade everything
 brew "topgrade"
+# view dirs as trees
 brew "tree"
+# archive tool
 brew "unar"
-brew "webp"
-brew "wget"
