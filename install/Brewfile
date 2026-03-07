@@ -23,7 +23,6 @@ brew "grep"
 # view gh markdown in browser
 brew "grip"
 brew "jq"
-brew "nvm"
 # markdown to html/word/etc converter
 brew "pandoc"
 # fuzzy finder
