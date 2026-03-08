@@ -33,7 +33,7 @@ sudo pmset -a standbydelay 3600
 sudo pmset -a sms 0
 
 # Disable audio feedback when volume is changed
-defaults write com.apple.sound.beep.feedback -bool true
+# defaults write com.apple.sound.beep.feedback -bool true
 
 # Disable the sound effects on boot
 # sudo nvram SystemAudioVolume=" " I like the sound
@@ -136,8 +136,8 @@ defaults write com.apple.BluetoothAudioAgent "Apple Bitpool Min (editable)" -int
 defaults write com.apple.screensaver askForPassword -int 1
 defaults write com.apple.screensaver askForPasswordDelay -int 0
 
-# Save screenshots to the desktop
-defaults write com.apple.screencapture location -string "${HOME}/Desktop"
+# Save screenshots to one folder
+defaults write com.apple.screencapture location -string "${HOME}/Desktop/screenshots"
 
 # Save screenshots in PNG format (other options: BMP, GIF, JPG, PDF, TIFF)
 defaults write com.apple.screencapture type -string "png"
