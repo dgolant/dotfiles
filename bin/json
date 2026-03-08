@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# Pretty-prints JSON from a file, URL, or stdin using underscore-cli
 
 OPT_COLOR=""
 

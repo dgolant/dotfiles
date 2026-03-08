@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# Exits 0 if running on macOS, 1 otherwise
 
 if [[ "$OSTYPE" =~ ^darwin ]]; then
   exit 0

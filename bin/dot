@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# Main dotfiles CLI: wraps common commands (macos, dock, edit, test, update, clean)
 
 BIN_NAME=$(basename "$0")
 COMMAND_NAME=$1
