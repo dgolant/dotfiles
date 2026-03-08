@@ -88,14 +88,14 @@ brew-packages: brew
 cask-apps: brew
 	brew bundle --file=$(DOTFILES_DIR)/install/Caskfile || true
 	defaults write org.hammerspoon.Hammerspoon MJConfigFile "~/.config/hammerspoon/init.lua"
-	for EXT in $$(cat install/Codefile); do code --install-extension $$EXT; done
+	for EXT in $$(grep -v '^\s*#' install/Codefile | grep -v '^\s*$$'); do code --install-extension $$EXT; done
 	xattr -d -r com.apple.quarantine ~/Library/QuickLook
 
 node-packages: npm
-	eval $$(fnm env); npm install -g $(shell cat install/npmfile)
+	eval $$(fnm env); npm install -g $(shell grep -v '^\s*#' install/npmfile | grep -v '^\s*$$')
 
 rust-packages: rust
-	cargo install $(shell cat install/Rustfile)
+	cargo install $(shell grep -v '^\s*#' install/Rustfile | grep -v '^\s*$$')
 
 test:
 	eval $$(fnm env); bats test
