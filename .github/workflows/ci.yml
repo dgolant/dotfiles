@@ -1,3 +1,4 @@
+# Verifies an install on macOS 11, macOS 12, and Ubuntu
 name: Dotfiles Installation
 
 on:

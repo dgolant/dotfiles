@@ -1,3 +1,4 @@
+# Checks that links in Markdown files aren't broken
 name: Check Markdown links
 
 on:
