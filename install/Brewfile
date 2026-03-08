@@ -1,6 +1,5 @@
 tap "goles/battery"
 tap "homebrew/bundle"
-tap "homebrew/core"
 
 # necessary for internal file function
 brew "awscli"
