@@ -23,7 +23,7 @@ It mainly targets macOS systems, but it works on at least Ubuntu as well.
 - [Homebrew](https://brew.sh) (packages: [Brewfile](./install/Brewfile))
 - [homebrew-cask](https://github.com/Homebrew/homebrew-cask) (packages: [Caskfile](./install/Caskfile))
 - [Node.js + npm LTS](https://nodejs.org/en/download/) (packages: [npmfile](./install/npmfile))
-- Latest Git, Bash 4, Python 3, GNU coreutils, curl, Ruby
+- Latest Git, Bash 5, Python 3, GNU coreutils, curl, Ruby
 - `$EDITOR` (and Git editor) is [GNU nano](https://www.nano-editor.org)
 
 ## Installation
