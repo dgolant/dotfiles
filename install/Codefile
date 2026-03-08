@@ -1,10 +1,16 @@
+# Code screenshots
 adpyke.codesnap
+
+# JS
 dbaeumer.vscode-eslint
-eamodio.gitlens
 esbenp.prettier-vscode
 hediet.vscode-drawio
+ritwickdey.liveserver
+
+# Syntax Highlighting
 naumovs.color-highlight
 redhat.vscode-yaml
-ritwickdey.liveserver
 sharat.vscode-brewfile
+
+# Styling
 stkb.rewrap

@@ -1,13 +1,17 @@
+# CLI Tools
+## Internet speed
 fast-cli
+## Interactive kill processes
 fkill-cli
+## TUI for htop
 gtop
+## simplified man pages
+tldr
+
+# Web Stuff
 local-web-server
+# restart node apps on save
 nodemon
 npm
-npm-check
-prettier
-release-it
-svgo
-tldr
-underscore-cli
-yarn
+
+
