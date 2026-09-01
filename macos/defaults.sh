@@ -1,4 +1,4 @@
-asCOMPUTER_NAME="daniel.golant"
+COMPUTER_NAME="daniel.golant"
 LANGUAGES=(en)
 LOCALE="en_US@currency=USD"
 MEASUREMENT_UNITS="Inches"
