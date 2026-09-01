@@ -21,13 +21,13 @@ PATH="$DOTFILES_DIR/bin:$PATH"
 
 # Source the dotfiles (order matters)
 
-for DOTFILE in "$DOTFILES_DIR"/system/.{function,function_*,path,env,exports,alias,fnm,grep,prompt,completion,fix}; do
-  [ -f "$DOTFILE" ] && . "$DOTFILE"
+for DOTFILE in "$DOTFILES_DIR"/system/.{function,function_*,path,env,exports,alias,fnm,grep,prompt,completion,fix,zoxide}; do
+  . "$DOTFILE"
 done
 
 if is-macos; then
-  for DOTFILE in "$DOTFILES_DIR"/system/.{env,alias,function,path}.macos; do
-    [ -f "$DOTFILE" ] && . "$DOTFILE"
+  for DOTFILE in "$DOTFILES_DIR"/system/.{env,alias,function}.macos; do
+    . "$DOTFILE"
   done
 fi
 
@@ -35,6 +35,7 @@ fi
 
 eval "$(dircolors -b "$DOTFILES_DIR"/system/.dir_colors)"
 
+# Wrap up
 # Add git-completion
 
 if [ -f ~/.git-completion.bash ]; then
@@ -44,10 +45,13 @@ fi
 # eval "$(pyenv init -)"
 
 # Clean up
-
 unset CURRENT_SCRIPT SCRIPT_PATH DOTFILE
+export DOTFILES_DIR
+. "$HOME/.cargo/env"
 
-# Export
+# DD-specific
+eval "$(direnv hook bash)"
+export GITLAB_TOKEN=$(security find-generic-password -a ${USER} -s gitlab_token -w)
 
 export DOTFILES_DIR
 

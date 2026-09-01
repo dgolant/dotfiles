@@ -7,6 +7,8 @@ function cdf() {
 # Dev
 
 d() {
+  $VISUAL ${1:-.}
+  $VISUAL_GIT ${1:-.}
   $DOTFILES_IDE ${1:-.}
 }
 

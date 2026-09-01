@@ -2,7 +2,7 @@
 
 These are my dotfiles. Take anything you want, but at your own risk.
 
-It mainly targets macOS systems, but it works on at least Ubuntu as well.
+It mainly targets macOS systems (should install on e.g. Ubuntu as well for many tools, config and aliases etc).
 
 ## Highlights
 
@@ -12,10 +12,10 @@ It mainly targets macOS systems, but it works on at least Ubuntu as well.
 - Fast and colored prompt
 - Updated macOS defaults
 - Well-organized and easy to customize
-- The installation and runcom setup is [tested weekly on real Ubuntu and macOS
-  machines](https://github.com/webpro/dotfiles/actions) (Big Sur and Monterey;
-  Catalina should still be fine too) using [a GitHub
-  Action](./.github/workflows/ci.yml)
+- The installation and runcom setup is
+  [tested weekly on real Ubuntu and macOS machines](https://github.com/webpro/dotfiles/actions)
+  (Big Sur/11, Monterey/12) using [a GitHub Action](./.github/workflows/dotfiles-installation.yml)
+  (currently on Ventura/13 myself)
 - Supports both Apple Silicon (M1) and Intel chips
 
 ## Packages Overview
@@ -23,8 +23,10 @@ It mainly targets macOS systems, but it works on at least Ubuntu as well.
 - [Homebrew](https://brew.sh) (packages: [Brewfile](./install/Brewfile))
 - [homebrew-cask](https://github.com/Homebrew/homebrew-cask) (packages: [Caskfile](./install/Caskfile))
 - [Node.js + npm LTS](https://nodejs.org/en/download/) (packages: [npmfile](./install/npmfile))
-- Latest Git, Bash 4, Python 3, GNU coreutils, curl, Ruby
-- `$EDITOR` (and Git editor) is [GNU nano](https://www.nano-editor.org)
+- Latest Git, Bash, Python, GNU coreutils, curl, Ruby
+- [Hammerspoon](https://www.hammerspoon.org) (config: [keybindings & window management](./config/hammerspoon))
+- [Mackup](https://github.com/lra/mackup) (sync application settings)
+- `$EDITOR` is [GNU nano](https://www.nano-editor.org) (`$VISUAL` is `code` and Git `core.editor` is `code --wait`)
 
 ## Installation
 
@@ -43,7 +45,7 @@ The Xcode Command Line Tools includes `git` and `make` (not available on stock m
 bash -c "`curl -fsSL https://raw.githubusercontent.com/webpro/dotfiles/master/remote-install.sh`"
 ```
 
-This will clone or download, this repo to `~/.dotfiles` depending on the availability of `git`, `curl` or `wget`.
+This will clone or download this repo to `~/.dotfiles` (depending on the availability of `git`, `curl` or `wget`).
 
 1. Alternatively, clone manually into the desired location:
 
@@ -51,8 +53,8 @@ This will clone or download, this repo to `~/.dotfiles` depending on the availab
 git clone https://github.com/webpro/dotfiles.git ~/.dotfiles
 ```
 
-Use the [Makefile](./Makefile) to install everything [listed above](#package-overview), and symlink [runcom](./runcom)
-and [config](./config) (using [stow](https://www.gnu.org/software/stow/)):
+Use the [Makefile](./Makefile) to install the [packages listed above](#packages-overview), and symlink
+[runcom](./runcom) and [config](./config) files (using [stow](https://www.gnu.org/software/stow/)):
 
 ```bash
 cd ~/.dotfiles
@@ -68,23 +70,25 @@ The installation process in the Makefile is tested on every push and every week 
 - `dot macos` (set [macOS defaults](./macos/defaults.sh))
 - Mackup
   - Log in to Dropbox (and wait until synced)
-  - `ln -s ~/.config/mackup/.mackup.cfg ~` (until [#632](https://github.com/lra/mackup/pull/632) is fixed)
+  - `cd && ln -s ~/.config/mackup/.mackup.cfg ~`
   - `mackup restore`
+- Start `Hammerspoon` once and set "Launch Hammerspoon at login"
+- `touch ~/.dotfiles/system/.exports` and populate this file with tokens (e.g. `export GITHUB_TOKEN=abc`)
 
 ## The `dotfiles` command
 
-```bash
+```
 $ dot help
 Usage: dot <command>
 
 Commands:
-    clean            Clean up caches (brew, npm, gem, rvm)
-    dock             Apply macOS Dock settings
-    edit             Open dotfiles in IDE (code) and Git GUI (stree)
-    help             This help message
-    macos            Apply macOS system defaults
-    test             Run tests
-    update           Alias for topgrade
+   clean            Clean up caches (brew, cargo, gem, pip)
+   dock             Apply macOS Dock settings
+   edit             Open dotfiles in IDE ($VISUAL) and Git GUI ($VISUAL_GIT)
+   help             This help message
+   macos            Apply macOS system defaults
+   test             Run tests
+   update           Update packages and pkg managers (brew, casks, cargo, pip3, npm, gems, macOS)
 ```
 
 ## Customize
