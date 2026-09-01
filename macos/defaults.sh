@@ -63,7 +63,7 @@ sudo systemsetup -setusingnetworktime on
 sudo systemsetup -setrestartfreeze on
 
 # Set standby delay to 24 hours (default is 1 hour)
-sudo pmset -a standbydelay 86400
+sudo pmset -a standbydelay 3600
 
 # Disable Sudden Motion Sensor
 sudo pmset -a sms 0
@@ -72,8 +72,7 @@ sudo pmset -a sms 0
 defaults write com.apple.sound.beep.feedback -bool true
 
 # Disable the sound effects on boot
-sudo nvram SystemAudioVolume=" "
-sudo nvram StartupMute=%01
+# sudo nvram SystemAudioVolume=" " I like the sound
 
 # Menu bar: show battery percentage
 defaults write com.apple.menuextra.battery ShowPercent YES
@@ -178,7 +177,7 @@ defaults write com.apple.screencapture location -string "${SCREENSHOTS_FOLDER}"
 defaults write com.apple.screencapture type -string "png"
 
 # Disable shadow in screenshots
-defaults write com.apple.screencapture disable-shadow -bool true
+defaults write com.apple.screencapture disable-shadow -bool false
 
 # Enable subpixel font rendering on non-Apple LCDs
 defaults write NSGlobalDomain AppleFontSmoothing -int 2
@@ -238,7 +237,7 @@ defaults write com.apple.NetworkBrowser BrowseAllInterfaces -bool true
 defaults write com.apple.finder FXPreferredViewStyle -string "Nlsv"
 
 # Disable the warning before emptying the Trash
-defaults write com.apple.finder WarnOnEmptyTrash -bool false
+defaults write com.apple.finder WarnOnEmptyTrash -bool true
 
 # Expand the following File Info panes:
 # “General”, “Open with”, and “Sharing & Permissions”
@@ -370,7 +369,7 @@ defaults write com.apple.SoftwareUpdate CriticalUpdateInstall -bool true
 defaults write com.apple.commerce AutoUpdate -bool true
 
 # Allow the App Store to reboot machine on macOS updates
-defaults write com.apple.commerce AutoUpdateRestartRequired -bool true
+defaults write com.apple.commerce AutoUpdateRestartRequired -bool false
 
 ###############################################################################
 # Kill affected applications                                                  #

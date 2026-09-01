@@ -36,12 +36,25 @@ fi
 eval "$(dircolors -b "$DOTFILES_DIR"/system/.dir_colors)"
 
 # Wrap up
+# Add git-completion
 
+if [ -f ~/.git-completion.bash ]; then
+  . "$DOTFILES_DIR/config/git/.git-completion.bash"
+fi
+
+# eval "$(pyenv init -)"
+
+# Clean up
 unset CURRENT_SCRIPT SCRIPT_PATH DOTFILE
 export DOTFILES_DIR
 . "$HOME/.cargo/env"
 
-
+# DD-specific
 eval "$(direnv hook bash)"
-
 export GITLAB_TOKEN=$(security find-generic-password -a ${USER} -s gitlab_token -w)
+
+export DOTFILES_DIR
+
+export NVM_DIR="$HOME/.config/nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion

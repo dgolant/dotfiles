@@ -28,6 +28,11 @@ prepend-path "$GOPATH/bin"
 prepend-path "$HOME/dd/devtools/bin"
 prepend-path "$HOME/dev/scripts"
 
+# Add mysql-client to PATH (skimm only, not installed by default)
+prepend-path "/usr/local/opt/mysql-client/bin"
+# Add psql
+prepend-path "/Applications/Postgres.app/Contents/Versions/latest/bin"
+
 # Remove duplicates (preserving prepended items)
 # Source: http://unix.stackexchange.com/a/40755
 

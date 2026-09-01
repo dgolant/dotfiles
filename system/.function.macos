@@ -9,6 +9,7 @@ function cdf() {
 d() {
   $VISUAL ${1:-.}
   $VISUAL_GIT ${1:-.}
+  $DOTFILES_IDE ${1:-.}
 }
 
 # Open man page as PDF

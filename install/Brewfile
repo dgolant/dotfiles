@@ -3,6 +3,8 @@ tap "homebrew/core"
 tap "lotyp/homebrew-formulae"
 
 # core/dotfiles
+brew "awscli"
+brew "bat"
 brew "bats-core"
 brew "coreutils"
 brew "lotyp/formulae/dockutil"
@@ -26,11 +28,19 @@ brew "zoxide"
 # search/grep/diff
 brew "diff-so-fancy"
 brew "difftastic"
+
+# brew "dockutil" // done by a custom install temporarily while dockutil homebrew issue is resolved
+# brew install 'hpedrorodrigues/tools/dockutil'
+
+brew "fasd"
 brew "fd"
 brew "fzf"
 brew "gnu-sed"
 brew "grep"
 brew "jq"
+brew "nvm"
+brew "pandoc"
+brew "peco"
 brew "psgrep"
 brew "rg"
 brew "zellij"
@@ -45,7 +55,12 @@ brew "shellcheck"
 # media
 brew "ffmpeg"
 brew "imagemagick"
-brew "uni"
+brew "ssh-copy-id"
+brew "stow"
+brew "ripgrep"
+brew "topgrade"
+brew "tree"
+brew "unar"
 brew "webp"
 
 # misc

@@ -1,13 +1,13 @@
 [user]
-	name = Lars Kappert
-	email = lars@webpro.nl
+	name = Dan Golant
+	email = dgolant@gmail.com
 
 [github]
-	user = webpro
+	user = dgolant
 
 [core]
 	excludesfile = ~/.config/git/ignore
-	editor = code --wait
+	editor = vim
 	filemode = false
 	trustctime = false
 	autocrlf = input
@@ -25,7 +25,7 @@
 	defaultBranch = main
 
 [push]
-	default = simple
+	default = current
 	followTags = true
 
 [fetch]
@@ -60,6 +60,9 @@
 	stl = ls-files -m -o --exclude-standard
 	sts = status -sb
 	unstage = reset --hard HEAD
+	adog = log  --all --decorate --oneline --graph
+	amend-to = "!f() { SHA=`git rev-parse \"$1\"`; git commit --fixup \"$SHA\" && GIT_SEQUENCE_EDITOR=true git rebase --interactive --autosquash \"$SHA^\"; }; f"
+	undo = "checkout master -- "
 
 [diff]
 	renames = copies
