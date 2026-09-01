@@ -32,7 +32,8 @@ brew "gnu-sed"
 brew "grep"
 brew "jq"
 brew "psgrep"
-brew "the_silver_searcher"
+brew "rg"
+brew "zellij"
 
 # languages/tools
 brew "fnm"

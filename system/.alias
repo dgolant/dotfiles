@@ -3,6 +3,7 @@
 alias reload="source ~/.bash_profile"
 alias _="sudo"
 alias g="git"
+alias k="kubectl"
 alias rr="rm -rf"
 alias cls="clear; printf '\033[3J'"
 
@@ -67,3 +68,8 @@ alias quit="exit"
 alias week="date +%V"
 alias speedtest="wget -O /dev/null http://speed.transip.nl/100mb.bin"
 alias grip="grip --browser --user=webpro --pass=$GITHUB_TOKEN"
+
+# Git
+alias rbranch="git branch --sort=-committerdate"
+alias trunkname="git remote show origin | awk '/HEAD branch/ { print \$NF }'"
+alias rebasemain='git checkout $(trunkname) && git pull origin $(trunkname) && git checkout - && git rebase -'
