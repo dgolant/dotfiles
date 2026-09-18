@@ -62,26 +62,35 @@ Running `make` with the Makefile is idempotent. The installation process in the 
 
 ## Post-Installation
 
-1. Set your Git credentials:
+1. Set your Git identity:
 
 ```sh
 git config --global user.name "your name"
 git config --global user.email "your@email.com"
 git config --global github.user "your-github-username"
-git config --global user.signingkey ~/.ssh/id_ed25519.pub
 ```
 
-2. Set macOS [Dock items](./macos/dock.sh) and [system defaults](./macos/defaults.sh):
+2. Sign in to 1Password and [configure commit signing](https://www.1password.dev/ssh/git-commit-signing) with your existing SSH key.
+
+3. Authenticate [GitHub CLI](https://cli.github.com/manual/gh_auth_login):
+
+```sh
+gh auth login
+```
+
+4. Set macOS [Dock items](./macos/dock.sh) and [system defaults](./macos/defaults.sh):
 
 ```sh
 dot dock
 dot macos
 ```
 
-1. Populate this file with anything you need sourced in each shell:
+5. Populate this file with anything you need sourced in each shell:
 
 ```sh
-touch ~/.dotfiles/local/.profile
+mkdir -p $DOTFILES_DIR/local
+touch $DOTFILES_DIR/local/.profile
+touch $DOTFILES_DIR/local/.env
 ```
 
 ## The `dot` command

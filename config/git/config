@@ -1,6 +1,7 @@
 [user]
 	name = Lars Kappert
 	email = lars@webpro.nl
+	signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMQDJg/REFtUFoSB/oS9Q/nHR4c+IDYzP0ktzj/yD0l4
 
 [github]
 	user = webpro
@@ -119,5 +120,11 @@
 	detachedHead = false
 [gpg]
 	format = ssh
+[gpg "ssh"]
+	program = /Applications/1Password.app/Contents/MacOS/op-ssh-sign
+	allowedSignersFile = ~/.config/git/allowed_signers
 [commit]
 	gpgsign = true
+[credential "https://github.com"]
+	helper =
+	helper = !/opt/homebrew/bin/gh auth git-credential
