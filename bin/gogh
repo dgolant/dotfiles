@@ -1,0 +1,262 @@
+#!/usr/bin/env bash
+#
+# gogh — browse and apply Gogh terminal themes in iTerm2
+# https://github.com/Gogh-Co/Gogh
+#
+# Usage:
+#   gogh                    interactive picker (fzf, with color previews)
+#   gogh <name>             apply a theme (substring match; spaces or dashes)
+#   gogh ls [filter]        list available themes
+#   gogh update             refresh the local theme cache
+#
+# Themes are cached in $GOGH_CACHE (default ~/.cache/gogh) as a shallow
+# clone of the Gogh repo. Applying a theme imports it as an iTerm2 Color
+# Preset and sets it on every open iTerm2 session via AppleScript. To make
+# a theme the default for new windows, also select it once in
+# Settings → Profiles → Colors → Color Presets.
+
+set -euo pipefail
+
+GOGH_CACHE="${GOGH_CACHE:-$HOME/.cache/gogh}"
+GOGH_REPO="https://github.com/Gogh-Co/Gogh"
+
+usage() {
+  sed -n '3,16p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'
+}
+
+require_cache() {
+  if [ ! -d "$GOGH_CACHE/themes" ]; then
+    echo "No theme cache found in $GOGH_CACHE. Run: gogh update" >&2
+    return 1
+  fi
+}
+
+list_themes() {
+  local f
+  for f in "$GOGH_CACHE"/themes/*.yml; do
+    [ -e "$f" ] || continue
+    printf '%s\n' "${f##*/}" | sed 's/\.yml$//'
+  done
+}
+
+# Lowercase, dashes as spaces, squeezed. Used for fuzzy matching.
+normalize() {
+  printf '%s' "$1" | tr '[:upper:]-' '[:lower:] ' | tr -s ' ' | sed 's/^ //; s/ $//'
+}
+
+# Same as normalize, with all spaces removed ("TokyoNight" ~= "tokyo night").
+squeeze() {
+  printf '%s' "$1" | tr -d ' '
+}
+
+# Echo theme ids matching a query; an exact match short-circuits.
+find_matches() {
+  local query squery theme
+  query="$(normalize "$1")"
+  squery="$(squeeze "$query")"
+  [ -n "$query" ] || return 0
+
+  while IFS= read -r theme; do
+    if [ "$(normalize "$theme")" = "$query" ] || [ "$(squeeze "$(normalize "$theme")")" = "$squery" ]; then
+      echo "$theme"
+      return 0
+    fi
+  done < <(list_themes)
+
+  while IFS= read -r theme; do
+    local sq
+    sq="$(squeeze "$(normalize "$theme")")"
+    if [[ "$(normalize "$theme")" == *"$query"* ]] || [[ "$sq" == *"$squery"* ]]; then
+      echo "$theme"
+    fi
+  done < <(list_themes)
+}
+
+# Resolve a query to a single theme id, or fail with candidates.
+resolve() {
+  local query matches count
+  query="$1"
+  matches="$(find_matches "$query")"
+  count="$(printf '%s\n' "$matches" | sed '/^$/d' | wc -l | tr -d ' ')"
+
+  if [ "$count" -eq 0 ]; then
+    echo "No Gogh theme matches '$query'. Try: gogh ls | grep -i '$query'" >&2
+    return 1
+  elif [ "$count" -gt 1 ]; then
+    echo "Ambiguous theme '$query'. Matches:" >&2
+    printf '%s\n' "$matches" >&2
+    return 1
+  fi
+  printf '%s' "$matches"
+}
+
+get_name() {   # theme file → yml 'name' field (may contain spaces)
+  sed -n "s/^name: *'\(.*\)'.*/\1/p" "$1" | head -1
+}
+
+get_color() {  # theme file key → hex value, e.g. #282828
+  sed -n "s/^$2: *'\(#[0-9A-Fa-f][0-9A-Fa-f]*\)'.*/\1/p" "$1" | head -1
+}
+
+theme_file() {
+  printf '%s/themes/%s.yml' "$GOGH_CACHE" "$1"
+}
+
+# One iTerm plist color dict; converts #RRGGBB to iTerm's 0-1 components.
+entry() {
+  local h r g b
+  h="${2#\#}"
+  r=$((16#${h:0:2})); g=$((16#${h:2:2})); b=$((16#${h:4:2}))
+  awk -v k="$1" -v r="$r" -v g="$g" -v b="$b" 'BEGIN {
+    printf "<key>%s</key><dict><key>Blue Component</key><real>%.6f</real><key>Green Component</key><real>%.6f</real><key>Red Component</key><real>%.6f</real></dict>", k, b/255, g/255, r/255
+  }'
+}
+
+# Render a theme as an iTerm2 .itermcolors plist (same format Gogh emits).
+render_plist() {
+  local file id="$1" name bg fg cursor i key hex
+  file="$(theme_file "$id")"
+  name="$(get_name "$file")"; [ -n "$name" ] || name="$id"
+  bg="$(get_color "$file" background)"
+  fg="$(get_color "$file" foreground)"
+  cursor="$(get_color "$file" cursor)"; [ -n "$cursor" ] || cursor="$fg"
+
+  printf '<?xml version="1.0" encoding="UTF-8"?>'
+  printf '<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">'
+  printf '<plist version="1.0"><dict>'
+  entry "Background Color" "$bg"
+  entry "Foreground Color" "$fg"
+  for i in 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15; do
+    key="$(printf 'color_%02d' $((i + 1)))"
+    hex="$(get_color "$file" "$key")"
+    [ -n "$hex" ] || continue
+    entry "Ansi $i Color" "$hex"
+  done
+  entry "Cursor Color" "$cursor"
+  printf '</dict></plist>\n'
+}
+
+# Truecolor swatch used by the fzf preview (and fzf preview alone).
+swatch() {
+  local h r g b
+  h="${1#\#}"
+  r=$((16#${h:0:2})); g=$((16#${h:2:2})); b=$((16#${h:4:2}))
+  printf '\033[48;2;%d;%d;%dm          \033[0m %-11s %s\n' "$r" "$g" "$b" "$2" "$1"
+}
+
+preview() {  # takes a theme id, possibly split across args by fzf
+  local id file key hex
+  id="$*"
+  file="$(theme_file "$id")"
+  [ -f "$file" ] || { echo "no preview for: $id"; return 0; }
+
+  echo "─── $(get_name "$file") ───"
+  echo
+  for i in $(seq 0 15); do
+    key="$(printf 'color_%02d' $((i + 1)))"
+    hex="$(get_color "$file" "$key")"
+    [ -n "$hex" ] && swatch "$hex" "$key"
+  done
+  echo
+  swatch "$(get_color "$file" background)" "background"
+  swatch "$(get_color "$file" foreground)" "foreground"
+  hex="$(get_color "$file" cursor)"; [ -n "$hex" ] && swatch "$hex" "cursor"
+}
+
+apply() {
+  local id file name tmpdir tmpfile
+  id="$(resolve "$1")"
+  file="$(theme_file "$id")"
+  name="$(get_name "$file")"; [ -n "$name" ] || name="$id"
+
+  # Import as an iTerm2 Color Preset (same mechanism Gogh itself uses)
+  tmpdir="$(mktemp -d)"
+  tmpfile="$tmpdir/${id// /-}.itermcolors"
+  render_plist "$id" > "$tmpfile"
+  open "$tmpfile"
+  rm -rf "$tmpdir"
+
+  # Set the preset on every session of every open window
+  if command -v osascript >/dev/null 2>&1; then
+    osascript - "$name" <<'APPLESCRIPT' || \
+      echo "Preset imported. Select it in iTerm2 Settings > Profiles > Colors to apply." >&2
+on run argv
+  tell application "iTerm2"
+    repeat with theWindow in windows
+      repeat with theTab in tabs of theWindow
+        repeat with theSession in sessions of theTab
+          tell theSession to set color preset to (item 1 of argv)
+        end repeat
+      end repeat
+    end repeat
+  end tell
+end run
+APPLESCRIPT
+  fi
+  echo "Applied '$name' (also available as an iTerm2 Color Preset)"
+}
+
+interactive() {
+  local sel
+  if ! command -v fzf >/dev/null 2>&1; then
+    echo "fzf is required for the interactive picker." >&2
+    echo "Pick a theme directly instead: gogh ls | grep -i <pattern>" >&2
+    return 1
+  fi
+  sel="$(list_themes | fzf \
+    --prompt='gogh> ' \
+    --height=45% --reverse \
+    --preview-window='right:50%:wrap' \
+    --preview "$(basename "$0") preview {}")"
+  [ -n "$sel" ] && apply "$sel"
+}
+
+update_cache() {
+  if [ -d "$GOGH_CACHE/.git" ]; then
+    git -C "$GOGH_CACHE" fetch --depth 1 origin master &&
+    git -C "$GOGH_CACHE" reset --hard FETCH_HEAD
+    echo "Theme cache updated."
+  else
+    rm -rf "$GOGH_CACHE"
+    git clone --depth 1 "$GOGH_REPO" "$GOGH_CACHE"
+    echo "Theme cache created."
+  fi
+}
+
+case "${1:-}" in
+  -h|--help|help)
+    usage
+    ;;
+  update)
+    update_cache
+    ;;
+  ls|list)
+    require_cache || exit 1
+    if [ "${2:-}" ]; then
+      list_themes | grep -i -- "$2" || echo "No themes match '$2'." >&2
+    else
+      list_themes
+    fi
+    ;;
+  match)  # internal: resolve a query to a theme id
+    require_cache || exit 1
+    resolve "${2:-}"
+    ;;
+  render) # internal: print the .itermcolors plist for a query
+    require_cache || exit 1
+    id="$(resolve "${2:-}")"
+    render_plist "$id"
+    ;;
+  preview) # internal: fzf preview pane (id may be split across args)
+    require_cache || exit 1
+    preview "${*:2}"
+    ;;
+  "")
+    require_cache || { echo "Run: gogh update" >&2; exit 1; }
+    interactive
+    ;;
+  *)
+    require_cache || { echo "Run: gogh update" >&2; exit 1; }
+    apply "$*"
+    ;;
+esac

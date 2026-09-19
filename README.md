@@ -109,6 +109,21 @@ Commands:
    update           Update packages and pkg managers (brew, casks, cargo, pip3, npm, gems, macOS)
 ```
 
+## Terminal themes
+
+Browse and apply [Gogh](https://gogh-co.github.io/Gogh/) color schemes in iTerm2:
+
+```sh
+gogh            # interactive picker (fzf, with color previews)
+gogh gruvbox    # apply a theme by substring
+gogh ls         # list themes
+gogh update     # refresh the theme cache
+```
+
+Applying a theme imports it as an iTerm2 Color Preset and sets it on every
+open session. To make it the default for new windows, also select it once in
+Settings → Profiles → Colors.
+
 ## Customize
 
 To customize the dotfiles to your likings, fork it and [be the king of your castle!](https://www.webpro.nl/articles/getting-started-with-dotfiles)

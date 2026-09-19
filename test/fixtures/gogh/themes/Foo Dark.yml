@@ -1,0 +1,27 @@
+---
+name: 'Foo Dark'
+author: 'fixture'
+variant: 'dark'
+
+color_01: '#282828'    # Black
+color_02: '#CC241D'    # Red
+color_03: '#98971A'    # Green
+color_04: '#D79921'    # Yellow
+color_05: '#458588'    # Blue
+color_06: '#B16286'    # Magenta
+color_07: '#689D6A'    # Cyan
+color_08: '#A89984'    # White
+
+color_09: '#928374'    # Bright Black
+color_10: '#FB4934'    # Bright Red
+color_11: '#B8BB26'    # Bright Green
+color_12: '#FABD2F'    # Bright Yellow
+color_13: '#83A598'    # Bright Blue
+color_14: '#D3869B'    # Bright Magenta
+color_15: '#8EC07C'    # Bright Cyan
+color_16: '#EBDBB2'    # Bright White
+
+background: '#282828'
+foreground: '#EBDBB2'
+
+cursor: '#EBDBB2'
