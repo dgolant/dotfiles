@@ -1,0 +1,4 @@
+2026-09-19T12:04:17.123Z INFO  server listening on 0.0.0.0:8000
+2026-09-19T12:04:18.456Z WARN  upstream timeout, retry 1/3
+2026-09-19T12:04:19.789Z ERROR connection refused: ECONNREFUSED
+2026-09-19T12:04:20.101Z DEBUG cache hit user=42
