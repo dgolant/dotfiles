@@ -27,7 +27,7 @@ PATH="$DOTFILES_DIR/bin:$PATH"
 [ -f "$DOTFILES_DIR/local/.env" ] && . "$DOTFILES_DIR/local/.env"
 [ -f "$DOTFILES_DIR/system/.exports" ] && . "$DOTFILES_DIR/system/.exports"
 
-for DOTFILE in "$DOTFILES_DIR"/system/.{function,function_*,n,path,env,alias,fzf,grep,prompt,completion,pnpm,zoxide}; do
+for DOTFILE in "$DOTFILES_DIR"/system/.{function,function_*,n,path,env,alias,fzf,grep,prompt,completion,zoxide}; do
   . "$DOTFILE"
 done
 

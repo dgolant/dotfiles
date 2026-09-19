@@ -5,7 +5,6 @@ gtop
 local-web-server
 npm
 npm-check-updates
-pnpm
 prettier
 release-it
 remark-cli
