@@ -170,7 +170,18 @@ preset_name() {
 }
 
 preset_exists() {
-  defaults read com.googlecode.iterm2 "Custom Color Presets" 2>/dev/null | grep -q "\"$1\" = "
+  # Parse the preset keys from iTerm2's prefs instead of grepping for
+  # text: `defaults` quotes keys with dashes ("Catppuccin-Mocha") but not
+  # plain-word keys (Dracula), so naive quote-dependent greps miss them.
+  # Preset keys sit at 4 spaces of indent when reading the dict directly.
+  defaults read com.googlecode.iterm2 "Custom Color Presets" 2>/dev/null | awk '
+      /^ {4}[^ }]/ {
+        line = $0
+        sub(/^ {4}/, "", line)
+        sub(/ = .*/, "", line)
+        gsub(/^"|"$/, "", line)
+        print line
+      }' | grep -Fxq -- "$1"
 }
 
 # Render the theme to a stable file and import it into iTerm2 as a
