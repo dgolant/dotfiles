@@ -41,6 +41,18 @@ GOGH_FIXTURE="${BATS_TEST_DIRNAME}/fixtures/gogh"
 	[[ "$output" == *"gogh update"* ]]
 }
 
+@test "gogh carousel rejects zero delay" {
+	GOGH_CACHE="$GOGH_FIXTURE" run gogh carousel 0
+	[ "$status" -eq 1 ]
+	[[ "$output" == *"positive number"* ]]
+}
+
+@test "gogh carousel rejects unknown theme up front" {
+	GOGH_CACHE="$GOGH_FIXTURE" run gogh carousel 3 not-a-theme
+	[ "$status" -eq 1 ]
+	[[ "$output" == *"not-a-theme"* ]]
+}
+
 @test "gogh render emits iTerm colors plist" {
 	GOGH_CACHE="$GOGH_FIXTURE" run gogh render foo-dark
 	[ "$status" -eq 0 ]

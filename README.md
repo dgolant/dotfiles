@@ -117,6 +117,7 @@ Browse and apply [Gogh](https://gogh-co.github.io/Gogh/) color schemes in iTerm2
 gogh            # interactive picker (fzf, with color previews)
 gogh gruvbox    # apply a theme by substring
 gogh ls         # list themes
+gogh carousel   # cycle themes until Ctrl-C (keeps the last one)
 gogh update     # refresh the theme cache
 ```
 

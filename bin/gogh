@@ -8,6 +8,8 @@
 #   gogh <name>             apply a theme (substring match; spaces or dashes)
 #   gogh ls [filter]        list available themes
 #   gogh update             refresh the local theme cache
+#   gogh carousel [secs] [theme...]
+#                           cycle themes until Ctrl-C (7s each by default)
 #
 # Themes are cached in $GOGH_CACHE (default ~/.cache/gogh) as a shallow
 # clone of the Gogh repo. Applying a theme imports it as an iTerm2 Color
@@ -21,7 +23,7 @@ GOGH_CACHE="${GOGH_CACHE:-$HOME/.cache/gogh}"
 GOGH_REPO="https://github.com/Gogh-Co/Gogh"
 
 usage() {
-  sed -n '3,16p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'
+  sed -n '3,17p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'
 }
 
 require_cache() {
@@ -271,12 +273,47 @@ update_cache() {
   fi
 }
 
+carousel() {
+  local delay theme
+  if [[ "${1:-}" =~ ^[0-9]+$ ]]; then
+    delay="$1"; shift
+  else
+    delay=7
+  fi
+  [ "$delay" -gt 0 ] || { echo "Delay must be a positive number of seconds." >&2; return 1; }
+
+  local themes=("$@")
+  if [ "${#themes[@]}" -eq 0 ]; then
+    themes=("Catppuccin Mocha" "TokyoNight Storm" "Dracula" "Nord" "Everforest Dark" "Gruvbox Dark")
+  fi
+  for theme in "${themes[@]}"; do
+    resolve "$theme" >/dev/null || return 1
+  done
+
+  local round=0
+  echo "Cycling ${#themes[@]} themes, ${delay}s each — Ctrl-C to stop (keeps the last theme)"
+  while :; do
+    round=$((round + 1))
+    echo "── round $round ──"
+    for theme in "${themes[@]}"; do
+      echo "  ▶ $theme"
+      apply "$theme" >/dev/null 2>&1
+      sleep "$delay"
+    done
+  done
+}
+
 case "${1:-}" in
   -h|--help|help)
     usage
     ;;
   update)
     update_cache
+    ;;
+  carousel)
+    require_cache || exit 1
+    shift
+    carousel "$@"
     ;;
   ls|list)
     require_cache || exit 1
