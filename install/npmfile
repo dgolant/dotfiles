@@ -8,5 +8,4 @@ prettier
 release-it
 svgo
 tldr
-underscore-cli
 yarn
