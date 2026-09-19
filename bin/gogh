@@ -11,6 +11,7 @@
 #   gogh show [name]       print the active (or given) theme's colors
 #   gogh fav                pick from favorites (fzf, with color previews)
 #   gogh fav <name>         add a theme to favorites (tracked in this repo)
+#   gogh fav -c            favorite the current (active) theme
 #   gogh fav rm <name>      remove a theme from favorites
 #   gogh carousel [secs] [theme...]
 #                           cycle themes until Ctrl-C (7s each by default)
@@ -28,7 +29,7 @@ GOGH_REPO="https://github.com/Gogh-Co/Gogh"
 GOGH_FAVORITES="${GOGH_FAVORITES:-$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)/config/gogh/favorites}"
 
 usage() {
-  sed -n '3,21p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'
+  sed -n '3,22p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'
 }
 
 require_cache() {
@@ -287,6 +288,16 @@ fav_pick() {
   [ -n "$sel" ] && apply "$sel"
 }
 
+fav_add() {  # add a resolved theme id to the favorites file
+  touch "$GOGH_FAVORITES"
+  if grep -xFq "$1" "$GOGH_FAVORITES"; then
+    echo "Already a favorite: $1"
+  else
+    echo "$1" >> "$GOGH_FAVORITES"
+    echo "Added favorite: $1"
+  fi
+}
+
 fav() {
   local action="${1:-}" id tmp
   case "$action" in
@@ -311,15 +322,14 @@ fav() {
       fi
       fav_pick
       ;;
+    -c|--current)
+      [ -f "$GOGH_CACHE/active" ] || { echo "No active theme recorded; run 'gogh <name>' first." >&2; return 1; }
+      id="$(cat "$GOGH_CACHE/active")"
+      [ -f "$(theme_file "$id")" ] || { echo "Active theme '$id' not found in cache; run: gogh update" >&2; return 1; }
+      fav_add "$id"
+      ;;
     *)
-      id="$(resolve "$action")"
-      touch "$GOGH_FAVORITES"
-      if grep -xFq "$id" "$GOGH_FAVORITES"; then
-        echo "Already a favorite: $id"
-      else
-        echo "$id" >> "$GOGH_FAVORITES"
-        echo "Added favorite: $id"
-      fi
+      fav_add "$(resolve "$action")"
       ;;
   esac
 }
