@@ -35,11 +35,11 @@ meteo() {
   curl -s "$LOCALE.wttr.in/${LOCATION:-}"
 }
 
-# Print the terminal's color palette (16 base colors, truecolor gradient) followed by representative output rendered with the active
+# Print the terminal's color palette (16 base colors) followed by followed by representative output rendered with the active
 # palette — so applying a gogh theme and running `colors` previews it IRL.
 
 colors() {
-  local i r
+  local i
   local B=$'\033[1m' D=$'\033[2m' R=$'\033[0m'
   local red=$'\033[31m' grn=$'\033[32m' yel=$'\033[33m' blu=$'\033[34m'
   local mag=$'\033[35m' cyn=$'\033[36m' gry=$'\033[90m' wht=$'\033[97m'
@@ -48,9 +48,6 @@ colors() {
 
   sec "16 base colors"
   for i in $(seq 0 15); do printf "\e[48;5;${i}m%-5s\e[m" "$i"; done; echo
-
-  sec "truecolor gradient (24-bit support test)"
-  for r in $(seq 0 8 255); do printf "\e[48;2;${r};$((255-r));128m \e[m"; done; echo
 
   sec "logs"
   printf '%s\n' \
