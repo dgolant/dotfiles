@@ -15,7 +15,6 @@ cask "font-iosevka"
 
 # dev tools
 cask "maccy"
-cask "ngrok"
 cask "postgres"
 cask "raycast"
 cask "rectangle"

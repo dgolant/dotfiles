@@ -46,7 +46,6 @@ brew "ripgrep"
 brew "zellij"
 
 # languages/tools
-brew "cmake"
 brew "gh"
 brew "make"
 brew "n"
