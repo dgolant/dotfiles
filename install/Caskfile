@@ -2,10 +2,8 @@
 cask "1password"
 cask "firefox"
 cask "google-chrome"
-cask "google-chrome@canary"
 cask "obsidian"
 cask "slack"
-cask "spotify"
 cask "visual-studio-code"
 
 # fonts
