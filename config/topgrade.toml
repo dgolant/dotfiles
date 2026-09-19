@@ -1,11 +1,10 @@
-# Don't ask for confirmations
+# Help: `topgrade --config-reference` (displays https://github.com/topgrade-rs/topgrade/blob/main/config.example.toml)
+
+[misc]
 assume_yes = true
-
-# Disable specific steps - same options as the command line flag
-disable = ["containers", "git_repos", "pnpm", "yarn"]
-
-# Display the time in step titles
+disable = ["containers", "git_repos", "yarn", "node", "system", "skills"]
 display_time = false
-
-# Cleanup temporary or old files
 cleanup = true
+
+[commands]
+"npm" = "npm update --location global --force"

@@ -6,11 +6,11 @@ alias g="git"
 alias k="kubectl"
 alias rr="rm -rf"
 alias cls="clear; printf '\033[3J'"
+alias mux="tmuxinator"
 
 # Default options
 
 alias rsync="rsync -vh"
-alias json="json -c"
 alias psgrep="psgrep -i"
 
 # Global aliases
@@ -30,19 +30,19 @@ alias paths='echo -e ${PATH//:/\\n}'
 
 # Directory listing/traversal
 
-LS_COLORS=$(is-supported "ls --color" --color -G)
+LS_COLORIZED=$(is-supported "ls --color" --color -G)
 LS_TIMESTYLEISO=$(is-supported "ls --time-style=long-iso" --time-style=long-iso)
 LS_GROUPDIRSFIRST=$(is-supported "ls --group-directories-first" --group-directories-first)
 
-alias ls="ls -lahA $LS_COLORS $LS_TIMESTYLEISO $LS_GROUPDIRSFIRST"
-alias l="ls -lahA $LS_COLORS $LS_TIMESTYLEISO $LS_GROUPDIRSFIRST"
-alias ll="ls -lA $LS_COLORS"
-alias lt="ls -lhAtr $LS_COLORS $LS_TIMESTYLEISO $LS_GROUPDIRSFIRST"
+alias ls="ls -lahA $LS_COLORIZED $LS_TIMESTYLEISO $LS_GROUPDIRSFIRST"
+alias l="ls -lahA $LS_COLORIZED $LS_TIMESTYLEISO $LS_GROUPDIRSFIRST"
+alias ll="ls -lA $LS_COLORIZED"
+alias lt="ls -lhAtr $LS_COLORIZED $LS_TIMESTYLEISO $LS_GROUPDIRSFIRST"
 # Long-list only directories
-alias ld="ls -ld $LS_COLORS */"
+alias ld="ls -ld $LS_COLORIZED */"
 alias lp="stat -c '%a %n' *"
 
-unset LS_COLORS LS_TIMESTYLEISO LS_GROUPDIRSFIRST
+unset LS_COLORIZED LS_TIMESTYLEISO LS_GROUPDIRSFIRST
 
 alias ..="cd .."
 alias ...="cd ../.."
@@ -53,15 +53,13 @@ alias cd.='cd $(readlink -f .)'    # Go to real dir (i.e. if current dir is link
 
 # npm
 
-alias ni="npm install"
-alias nu="npm uninstall"
-alias nri="rm -r node_modules && npm install"
-alias ncd="npm-check -su"
+alias ncu="npm-check-updates --interactive"
+alias ncuw="npm-check-updates --interactive --root --workspaces"
 
 # Network
 
-alias ip="curl -s ipinfo.io | jq -r '.ip'"
-alias ipl="ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1'"
+alias ipp="dig +short myip.opendns.com @resolver1.opendns.com"
+alias ipl="ip route get 1.1.1.1 2>/dev/null | awk 'NR==1{print \$7}'"
 
 # Miscellaneous
 
@@ -69,7 +67,8 @@ alias hosts="sudo $EDITOR /etc/hosts"
 alias quit="exit"
 alias week="date +%V"
 alias speedtest="wget -O /dev/null http://speed.transip.nl/100mb.bin"
-alias grip="grip --browser --user=webpro --pass=$GITHUB_TOKEN"
+alias grip="grip --browser --pass=$GITHUB_TOKEN"
+alias fkill="ps -e | fzf | awk '{print $1}' | xargs kill"
 
 # Git
 alias rbranch="git branch --sort=-committerdate"

@@ -2,12 +2,10 @@ fast-cli
 fkill-cli
 gtop
 local-web-server
-nodemon
 npm
-npm-check
+npm-check-updates
 prettier
 release-it
 svgo
 tldr
-underscore-cli
 yarn
