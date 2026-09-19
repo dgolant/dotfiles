@@ -44,9 +44,9 @@ meteo() {
 
 colors() {
   local i
-  local B=$'\033[1m' D=$'\033[2m' R=$'\033[0m'
+  local B=$'\033[1m' R=$'\033[0m'
   local red=$'\033[31m' grn=$'\033[32m' yel=$'\033[33m' blu=$'\033[34m'
-  local mag=$'\033[35m' cyn=$'\033[36m' gry=$'\033[90m' wht=$'\033[97m'
+  local cyn=$'\033[36m' gry=$'\033[90m' wht=$'\033[97m'
   local dir="${DOTFILES_DIR:-$HOME/.dotfiles}/config/gogh/samples"
 
   sec() { printf '\n%s── %s ──%s\n' "$B" "$1" "$R"; }
@@ -97,7 +97,4 @@ colors() {
     "${cyn}12:04:19${R} ${yel}WARN ${R}  upstream timeout, retry ${wht}1/3${R}" \
     "${cyn}12:04:20${R} ${red}ERROR${R} connection refused: ${red}ECONNREFUSED${R}"
 
-  sec "prompt"
-  printf '%s' "${grn}➜${R} ${blu}dotfiles${R} ${mag}(master)${R} "
-  printf '%s %s\n' "${grn}ls -la${R}" "${D}# try: colors | less -R${R}"
 }
