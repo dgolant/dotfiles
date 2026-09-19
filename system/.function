@@ -35,8 +35,7 @@ meteo() {
   curl -s "$LOCALE.wttr.in/${LOCATION:-}"
 }
 
-# Print the terminal's color palette (16 base, 256-color grid, truecolor
-# gradient) followed by representative output rendered with the active
+# Print the terminal's color palette (16 base colors, truecolor gradient) followed by representative output rendered with the active
 # palette — so applying a gogh theme and running `colors` previews it IRL.
 
 colors() {
@@ -49,12 +48,6 @@ colors() {
 
   sec "16 base colors"
   for i in $(seq 0 15); do printf "\e[48;5;${i}m%-5s\e[m" "$i"; done; echo
-
-  sec "256-color grid"
-  for i in $(seq 16 255); do
-    printf "\e[48;5;${i}m%-5s\e[m" "$i"
-    [ $(( (i-15) % 12 )) -eq 0 ] && echo
-  done
 
   sec "truecolor gradient (24-bit support test)"
   for r in $(seq 0 8 255); do printf "\e[48;2;${r};$((255-r));128m \e[m"; done; echo
