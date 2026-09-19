@@ -88,6 +88,7 @@ cask-apps: brew
 	$(BIN)/brew bundle --file=$(DOTFILES_DIR)/install/Caskfile || true
 	defaults write org.hammerspoon.Hammerspoon MJConfigFile "~/.config/hammerspoon/init.lua"
 	for EXT in $$(cat install/Codefile); do code --install-extension $$EXT; done
+	. $(DOTFILES_DIR)/macos/iterm2.sh
 
 node-packages: npm
 	eval $$(fnm env); npm install -g $(shell cat install/npmfile)
