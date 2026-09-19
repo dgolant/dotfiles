@@ -2,20 +2,18 @@
 
 These are my dotfiles. Take anything you want, but at your own risk.
 
-It mainly targets macOS systems (should install on e.g. Ubuntu as well for many tools, config and aliases etc).
+Mainly targets macOS systems, but works on Ubuntu and Arch Linux as well.
 
 ## Highlights
 
 - Minimal efforts to install everything, using a [Makefile](./Makefile)
 - Mostly based around Homebrew, Caskroom and Node.js, latest Bash + GNU Utils
-- Great [Window management](./config/hammerspoon/README.md) (using Hammerspoon)
 - Fast and colored prompt
 - Updated macOS defaults
 - Well-organized and easy to customize
 - The installation and runcom setup is
   [tested weekly on real Ubuntu and macOS machines](https://github.com/webpro/dotfiles/actions)
-  (Big Sur/11, Monterey/12) using [a GitHub Action](./.github/workflows/dotfiles-installation.yml)
-  (currently on Ventura/13 myself)
+  (Sonoma/14, Sequoia/15, Tahoe/26) using [a GitHub Action](./.github/workflows/dotfiles-installation.yml)
 - Supports both Apple Silicon (M1) and Intel chips
 
 ## Packages Overview
@@ -24,9 +22,7 @@ It mainly targets macOS systems (should install on e.g. Ubuntu as well for many 
 - [homebrew-cask](https://github.com/Homebrew/homebrew-cask) (packages: [Caskfile](./install/Caskfile))
 - [Node.js + npm LTS](https://nodejs.org/en/download/) (packages: [npmfile](./install/npmfile))
 - Latest Git, Bash, Python, GNU coreutils, curl, Ruby
-- [Hammerspoon](https://www.hammerspoon.org) (config: [keybindings & window management](./config/hammerspoon))
-- [Mackup](https://github.com/lra/mackup) (sync application settings)
-- `$EDITOR` is [GNU nano](https://www.nano-editor.org) (`$VISUAL` is `code` and Git `core.editor` is `code --wait`)
+- Editors: VS Code and nano (`EDITOR`, `VISUAL` and Git `core.editor`)
 
 ## Installation
 
@@ -53,29 +49,51 @@ This will clone or download this repo to `~/.dotfiles` (depending on the availab
 git clone https://github.com/dgolant/dotfiles.git ~/.dotfiles
 ```
 
-Use the [Makefile](./Makefile) to install the [packages listed above](#packages-overview), and symlink
-[runcom](./runcom) and [config](./config) files (using [stow](https://www.gnu.org/software/stow/)):
+2. Use the [Makefile](./Makefile) to install the [packages listed above](#packages-overview), and symlink
+   [runcom](./runcom) and [config](./config) files (using [stow](https://www.gnu.org/software/stow/)):
 
 ```bash
 cd ~/.dotfiles
 make
 ```
 
-The installation process in the Makefile is tested on every push and every week in this
+Running `make` with the Makefile is idempotent. The installation process in the Makefile is tested on every push and every week in this
 [GitHub Action](https://github.com/dgolant/dotfiles/actions).
 
 ## Post-Installation
 
-- `dot dock` (set [Dock items](./macos/dock.sh))
-- `dot macos` (set [macOS defaults](./macos/defaults.sh))
-- Mackup
-  - Log in to Dropbox (and wait until synced)
-  - `cd && ln -s ~/.config/mackup/.mackup.cfg ~`
-  - `mackup restore`
-- Start `Hammerspoon` once and set "Launch Hammerspoon at login"
-- `touch ~/.dotfiles/system/.exports` and populate this file with tokens (e.g. `export GITHUB_TOKEN=abc`)
+1. Set your Git identity:
 
-## The `dotfiles` command
+```sh
+git config --global user.name "your name"
+git config --global user.email "your@email.com"
+git config --global github.user "your-github-username"
+```
+
+2. Sign in to 1Password and [configure commit signing](https://www.1password.dev/ssh/git-commit-signing) with your existing SSH key.
+
+3. Authenticate [GitHub CLI](https://cli.github.com/manual/gh_auth_login):
+
+```sh
+gh auth login
+```
+
+4. Set macOS [Dock items](./macos/dock.sh) and [system defaults](./macos/defaults.sh):
+
+```sh
+dot dock
+dot macos
+```
+
+5. Populate this file with anything you need sourced in each shell:
+
+```sh
+mkdir -p $DOTFILES_DIR/local
+touch $DOTFILES_DIR/local/.profile
+touch $DOTFILES_DIR/local/.env
+```
+
+## The `dot` command
 
 ```
 $ dot help
@@ -93,7 +111,7 @@ Commands:
 
 ## Customize
 
-To customize the dotfiles to your likings, fork it and make sure to modify the locations above to your fork.
+To customize the dotfiles to your likings, fork it and [be the king of your castle!](https://www.webpro.nl/articles/getting-started-with-dotfiles)
 
 ## Credits
 

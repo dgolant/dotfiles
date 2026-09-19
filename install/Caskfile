@@ -1,26 +1,25 @@
-tap "homebrew/cask"
-tap "homebrew/cask-drivers"
-tap "homebrew/cask-fonts"
-tap "homebrew/cask-versions"
+# browsers & apps
+cask "1password"
+cask "firefox"
+cask "google-chrome"
+cask "google-chrome@canary"
+cask "obsidian"
+cask "slack"
+cask "spotify"
+cask "visual-studio-code"
 
+# fonts
 cask "font-fira-code"
 cask "font-hack"
 cask "font-iosevka"
 
-cask "google-chrome"
-cask "1password"
-cask "slack"
-cask "obsidian"
-
+# dev tools
+cask "fork"
 cask "maccy"
+cask "ngrok"
+cask "postgres"
+cask "proton-drive"
 cask "raycast"
 cask "rectangle"
-
-
-
-
-cask "spotify"
 cask "tunnelblick"
-cask "visual-studio-code"
-cask "postgres"
-
+cask "vlc"

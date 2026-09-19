@@ -1,7 +1,8 @@
 .DS_Store
 *.lock.json
 __pycache__
+__pycache__
 system/.custom
 system/.exports
 .vscode
-__pycache__
+local

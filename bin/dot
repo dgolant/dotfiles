@@ -10,6 +10,7 @@ sub_help () {
   echo "Commands:"
   echo "   clean            Clean up caches (brew, cargo, gem, pip)"
   echo "   dock             Apply macOS Dock settings"
+  echo "   duti             Set default apps for file types (UTI)"
   echo "   edit             Open dotfiles in IDE ($VISUAL) and Git GUI ($VISUAL_GIT)"
   echo "   help             This help message"
   echo "   macos            Apply macOS system defaults"
@@ -18,14 +19,11 @@ sub_help () {
 }
 
 sub_clean () {
-  echo "$ brew cleanup"
-  brew cleanup
+  mole clean
   echo "$ cargo cache --autoclean"
   cargo cache --autoclean
   echo "$ gem cleanup"
   gem cleanup
-  echo "$ pip cache purge"
-  pip cache purge
 }
 
 sub_dock () {
@@ -43,6 +41,10 @@ sub_test () {
 
 sub_update () {
   topgrade
+}
+
+sub_duti () {
+  duti -v "${DOTFILES_DIR}/install/duti"
 }
 
 sub_macos () {

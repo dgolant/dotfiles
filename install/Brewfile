@@ -1,22 +1,24 @@
-tap "homebrew/bundle"
-tap "homebrew/core"
-tap "lotyp/homebrew-formulae"
-
 # core/dotfiles
 brew "awscli"
 brew "bat"
 brew "bats-core"
 brew "coreutils"
-brew "lotyp/formulae/dockutil"
-brew "mackup"
+brew "duti"
+brew "dockutil"
+brew "nano"
+brew "parallel"
 brew "stow"
+brew "tmux"
 brew "topgrade"
+brew "util-linux"
+brew "watch"
 
 # fs/network
 brew "bat"
 brew "croc"
+brew "curl"
+brew "eza"
 brew "httpie"
-brew "ngrok"
 brew "ssh-copy-id"
 brew "tree"
 brew "unar"
@@ -24,42 +26,42 @@ brew "wget"
 brew "zoxide"
 
 # search/grep/diff
-brew "diff-so-fancy"
-brew "difftastic"
-
-# brew "dockutil" // done by a custom install temporarily while dockutil homebrew issue is resolved
-# brew install 'hpedrorodrigues/tools/dockutil'
-
+brew "diffutils"
 brew "fasd"
 brew "fd"
+brew "findutils"
 brew "fzf"
+brew "gawk"
+brew "git-delta"
 brew "gnu-sed"
+brew "gnu-tar"
+brew "gpatch"
 brew "grep"
 brew "jq"
 brew "nvm"
 brew "pandoc"
 brew "peco"
 brew "psgrep"
-brew "rg"
+brew "ripgrep"
 brew "zellij"
 
 # languages/tools
-brew "fnm"
+brew "cmake"
 brew "gh"
+brew "make"
+brew "n"
 brew "python"
+brew "ruby"
 brew "rust"
 brew "shellcheck"
 
 # media
 brew "ffmpeg"
 brew "imagemagick"
-brew "ssh-copy-id"
-brew "stow"
-brew "ripgrep"
-brew "topgrade"
-brew "tree"
-brew "unar"
+brew "optipng"
+brew "uni"
 brew "webp"
 
 # misc
 brew "grip"
+brew "mole"
