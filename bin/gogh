@@ -163,23 +163,34 @@ preview() {  # takes a theme id, possibly split across args by fzf
   hex="$(get_color "$file" cursor)"; [ -n "$hex" ] && swatch "$hex" "cursor"
 }
 
-apply() {
-  local id file name tmpdir tmpfile
-  id="$(resolve "$1")"
-  file="$(theme_file "$id")"
-  name="$(get_name "$file")"; [ -n "$name" ] || name="$id"
+# iTerm2 names imported presets after the file they came from; our
+# rendered files use the dash-joined theme id (e.g. "TokyoNight-Storm").
+preset_name() {
+  printf '%s' "$1" | tr ' ' '-'
+}
 
-  # Import as an iTerm2 Color Preset (same mechanism Gogh itself uses)
-  tmpdir="$(mktemp -d)"
-  tmpfile="$tmpdir/${id// /-}.itermcolors"
-  render_plist "$id" > "$tmpfile"
-  open "$tmpfile"
-  rm -rf "$tmpdir"
+preset_exists() {
+  defaults read com.googlecode.iterm2 "Custom Color Presets" 2>/dev/null | grep -q "\"$1\" = "
+}
 
-  # Set the preset on every session of every open window
-  if command -v osascript >/dev/null 2>&1; then
-    osascript - "$name" <<'APPLESCRIPT' || \
-      echo "Preset imported. Select it in iTerm2 Settings > Profiles > Colors to apply." >&2
+# Render the theme to a stable file and import it into iTerm2 as a
+# Color Preset. The file is kept (no race with `open`) so re-imports of
+# the same theme reuse it.
+install_preset() {
+  local preset file
+  preset="$(preset_name "$1")"
+  mkdir -p "$GOGH_CACHE/itermcolors"
+  file="$GOGH_CACHE/itermcolors/$preset.itermcolors"
+  render_plist "$1" > "$file"
+  open "$file"
+}
+
+# Set a preset on every session of every open window; tries candidate
+# names in order and succeeds as soon as one applies.
+apply_preset() {
+  local candidate
+  for candidate in "$@"; do
+    if osascript - "$candidate" >/dev/null 2>&1 <<'APPLESCRIPT'
 on run argv
   tell application "iTerm2"
     repeat with theWindow in windows
@@ -192,8 +203,34 @@ on run argv
   end tell
 end run
 APPLESCRIPT
+    then
+      return 0
+    fi
+  done
+  return 1
+}
+
+apply() {
+  local id file name preset
+  id="$(resolve "$1")"
+  file="$(theme_file "$id")"
+  name="$(get_name "$file")"; [ -n "$name" ] || name="$id"
+  preset="$(preset_name "$id")"
+
+  # Import only if the preset is not already in iTerm2 (idempotent:
+  # switching themes never adds duplicate Color Presets)
+  if ! preset_exists "$preset"; then
+    install_preset "$id"
+    echo "Imported '$preset' as an iTerm2 Color Preset"
   fi
-  echo "Applied '$name' (also available as an iTerm2 Color Preset)"
+
+  if apply_preset "$preset" "$name"; then
+    echo "Applied '$name'"
+  else
+    echo "Could not set the preset on open sessions." >&2
+    echo "Select '$preset' in iTerm2 Settings > Profiles > Colors." >&2
+    return 1
+  fi
 }
 
 interactive() {
