@@ -8,6 +8,7 @@
 #   gogh <name>             apply a theme (substring match; spaces or dashes)
 #   gogh ls [filter]        list available themes
 #   gogh update             refresh the local theme cache
+#   gogh show [name]       print the active (or given) theme's colors
 #   gogh carousel [secs] [theme...]
 #                           cycle themes until Ctrl-C (7s each by default)
 #
@@ -23,7 +24,7 @@ GOGH_CACHE="${GOGH_CACHE:-$HOME/.cache/gogh}"
 GOGH_REPO="https://github.com/Gogh-Co/Gogh"
 
 usage() {
-  sed -n '3,17p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'
+  sed -n '3,18p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'
 }
 
 require_cache() {
@@ -238,6 +239,7 @@ apply() {
   fi
 
   if apply_preset "$preset" "$name"; then
+    printf '%s' "$id" > "$GOGH_CACHE/active"
     echo "Applied '$name'"
   else
     echo "Could not set the preset on open sessions." >&2
@@ -321,6 +323,17 @@ case "${1:-}" in
       list_themes | grep -i -- "$2" || echo "No themes match '$2'." >&2
     else
       list_themes
+    fi
+    ;;
+  show)  # print the active (or given) theme's color swatch
+    require_cache || exit 1
+    if [ "${2:-}" ]; then
+      preview "$(resolve "$2")"
+    elif [ -f "$GOGH_CACHE/active" ]; then
+      preview "$(cat "$GOGH_CACHE/active")"
+    else
+      echo "No active theme recorded; run 'gogh <name>' first, or 'gogh show <name>'." >&2
+      exit 1
     fi
     ;;
   match)  # internal: resolve a query to a theme id
