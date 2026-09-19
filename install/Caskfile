@@ -3,8 +3,6 @@ tap "homebrew/cask-drivers"
 tap "homebrew/cask-fonts"
 tap "homebrew/cask-versions"
 
-cask "docker"
-
 cask "font-fira-code"
 cask "font-hack"
 cask "font-iosevka"
