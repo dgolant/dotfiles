@@ -1,0 +1,8 @@
+{
+  "name": "gogh-samples",
+  "version": "1.2.0",
+  "port": 8000,
+  "active": "TokyoNight Storm",
+  "features": ["favorites", "carousel", "truecolor"],
+  "limits": { "retries": 3, "timeout": 0.5 }
+}
