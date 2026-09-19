@@ -42,8 +42,8 @@ link: stow-$(OS)
 	for FILE in $$(\ls -A runcom); do if [ -f $(HOME)/$$FILE -a ! -h $(HOME)/$$FILE ]; then \
 		mv -v $(HOME)/$$FILE{,.bak}; fi; done
 	mkdir -p $(XDG_CONFIG_HOME)
-	$(BIN)/stow -t $(HOME) runcom
-	$(BIN)/stow -t $(XDG_CONFIG_HOME) config
+# 	$(BIN)/stow -t $(HOME) runcom
+# 	$(BIN)/stow -t $(XDG_CONFIG_HOME) config
 
 unlink: stow-$(OS)
 	$(BIN)/stow --delete -t $(HOME) runcom
@@ -88,6 +88,7 @@ cask-apps: brew
 	$(BIN)/brew bundle --file=$(DOTFILES_DIR)/install/Caskfile || true
 	defaults write org.hammerspoon.Hammerspoon MJConfigFile "~/.config/hammerspoon/init.lua"
 	for EXT in $$(cat install/Codefile); do code --install-extension $$EXT; done
+	. $(DOTFILES_DIR)/macos/iterm2.sh
 
 node-packages: npm
 	eval $$(fnm env); npm install -g $(shell cat install/npmfile)
