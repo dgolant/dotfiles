@@ -14,7 +14,6 @@ cask "font-hack"
 cask "font-iosevka"
 
 # dev tools
-cask "fork"
 cask "maccy"
 cask "ngrok"
 cask "postgres"
