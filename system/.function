@@ -34,3 +34,15 @@ meteo() {
   LOCATION="${LOCATION// /%20}"
   curl -s "$LOCALE.wttr.in/${LOCATION:-}"
 }
+
+# Print the terminal's color palette (16 base, 256-color grid, truecolor gradient)
+
+colors() {
+  local i r
+  for i in $(seq 0 15); do printf "\e[48;5;${i}m%-5s\e[m" "$i"; done; echo; echo
+  for i in $(seq 16 255); do
+    printf "\e[48;5;${i}m%-5s\e[m" "$i"
+    [ $(( (i-15) % 12 )) -eq 0 ] && echo
+  done; echo
+  for r in $(seq 0 8 255); do printf "\e[48;2;${r};$((255-r));128m \e[m"; done; echo
+}
