@@ -82,7 +82,7 @@ git: brew
 npm: brew-packages
 	n install lts
 
-packages-macos: brew-packages cask-apps node-packages rust-packages
+packages-macos: brew-packages cask-apps node-packages rust-packages curl-installs
 
 packages-arch: pacman-packages
 
@@ -107,6 +107,9 @@ rust-packages: brew-packages
 
 duti:
 	duti -v $(DOTFILES_DIR)/install/duti
+
+curl-installs:
+	is-executable pi || curl -fsSL https://pi.dev/install.sh | sh
 
 test:
 	bats test
