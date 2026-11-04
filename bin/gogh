@@ -6,6 +6,7 @@
 # Usage:
 #   gogh                    interactive picker (fzf, with color previews)
 #   gogh <name>             apply a theme (substring match; spaces or dashes)
+#   gogh --only <name>      apply a theme to the current window only
 #   gogh ls [filter]        list available themes
 #   gogh update             refresh the local theme cache
 #   gogh show [name]       print the active (or given) theme's colors
@@ -19,8 +20,9 @@
 #
 # Themes are cached in $GOGH_CACHE (default ~/.cache/gogh) as a shallow
 # clone of the Gogh repo. Applying a theme imports it as an iTerm2 Color
-# Preset and sets it on every open iTerm2 session via AppleScript. To make
-# a theme the default for new windows, also select it once in
+# Preset and sets it on every open iTerm2 session via AppleScript. Use
+# --only to scope an apply to the current window's sessions. To make a
+# theme the default for new windows, also select it once in
 # Settings → Profiles → Colors → Color Presets.
 
 set -euo pipefail
@@ -30,7 +32,7 @@ GOGH_REPO="https://github.com/Gogh-Co/Gogh"
 GOGH_FAVORITES="${GOGH_FAVORITES:-$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)/config/gogh/favorites}"
 
 usage() {
-  sed -n '3,23p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'
+  sed -n '3,24p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'
 }
 
 require_cache() {
@@ -230,8 +232,46 @@ APPLESCRIPT
   return 1
 }
 
+# Set a preset on every session of the window that owns this shell.
+# ITERM_SESSION_ID ("w1t0p0:UUID") carries the same UUID as the
+# AppleScript session id, so the window can be found without relying on
+# window order (w<N> renumbers as windows move).
+apply_preset_window() {
+  local candidate target="${ITERM_SESSION_ID##*:}"
+  [ -n "$target" ] || { echo "Not inside iTerm2 (no ITERM_SESSION_ID)." >&2; return 1; }
+  for candidate in "$@"; do
+    if osascript - "$candidate" "$target" >/dev/null 2>&1 <<'APPLESCRIPT'
+on run argv
+  set presetName to item 1 of argv
+  set targetID to item 2 of argv
+  tell application "iTerm2"
+    set targetWindow to missing value
+    repeat with theWindow in windows
+      repeat with theTab in tabs of theWindow
+        repeat with theSession in sessions of theTab
+          if (id of theSession) is targetID then set targetWindow to theWindow
+        end repeat
+      end repeat
+      if targetWindow is not missing value then exit repeat
+    end repeat
+    if targetWindow is missing value then error "session not found"
+    repeat with theTab in tabs of targetWindow
+      repeat with theSession in sessions of theTab
+        tell theSession to set color preset to presetName
+      end repeat
+    end repeat
+  end tell
+end run
+APPLESCRIPT
+    then
+      return 0
+    fi
+  done
+  return 1
+}
+
 apply() {
-  local id file name preset
+  local query="$1" scope="${2:-all}"
   id="$(resolve "$1")"
   file="$(theme_file "$id")"
   name="$(get_name "$file")"; [ -n "$name" ] || name="$id"
@@ -244,18 +284,25 @@ apply() {
     echo "Imported '$preset' as an iTerm2 Color Preset"
   fi
 
-  if apply_preset "$preset" "$name"; then
+  if [ "$scope" = "only" ]; then
+    # Window-scoped applies leave the recorded active theme alone: it
+    # tracks the global default, not one window's override.
+    if apply_preset_window "$preset" "$name"; then
+      echo "Applied '$name' (this window only)"
+      return 0
+    fi
+  elif apply_preset "$preset" "$name"; then
     printf '%s' "$id" > "$GOGH_CACHE/active"
     echo "Applied '$name'"
-  else
-    echo "Could not set the preset on open sessions." >&2
-    echo "Select '$preset' in iTerm2 Settings > Profiles > Colors." >&2
-    return 1
+    return 0
   fi
+  echo "Could not set the preset on open sessions." >&2
+  echo "Select '$preset' in iTerm2 Settings > Profiles > Colors." >&2
+  return 1
 }
 
 interactive() {
-  local sel
+  local sel scope="${1:-all}"
   if ! command -v fzf >/dev/null 2>&1; then
     echo "fzf is required for the interactive picker." >&2
     echo "Pick a theme directly instead: gogh ls | grep -i <pattern>" >&2
@@ -266,7 +313,7 @@ interactive() {
     --height=45% --reverse \
     --preview-window='right:50%:wrap' \
     --preview "$(basename "$0") preview {}")"
-  [ -n "$sel" ] && apply "$sel"
+  [ -n "$sel" ] && apply "$sel" "$scope"
 }
 
 favorites_list() {  # ids from the favorites file, comments and blanks skipped
@@ -441,6 +488,15 @@ case "${1:-}" in
   -h|--help|help)
     usage
     ;;
+  --only|-o)
+    require_cache || { echo "Run: gogh update" >&2; exit 1; }
+    shift
+    if [ $# -gt 0 ]; then
+      apply "$*" only
+    else
+      interactive only
+    fi
+    ;;
   update)
     update_cache
     ;;
@@ -494,6 +550,21 @@ case "${1:-}" in
     ;;
   *)
     require_cache || { echo "Run: gogh update" >&2; exit 1; }
-    apply "$*"
+    # The flag works before or after the theme: gogh --only dracula,
+    # gogh dracula --only, and gogh "tokyo night" --only are equivalent.
+    scope=all
+    args=()
+    for a in "$@"; do
+      if [ "$a" = "--only" ] || [ "$a" = "-o" ]; then
+        scope=only
+      else
+        args+=("$a")
+      fi
+    done
+    if [ ${#args[@]} -eq 0 ]; then
+      interactive "$scope"
+    else
+      apply "${args[*]}" "$scope"
+    fi
     ;;
 esac
